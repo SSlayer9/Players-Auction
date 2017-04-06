@@ -1,0 +1,86 @@
+#!/usr/bin/env node
+
+'use strict';
+
+/**
+ * Players Auction main file
+ */
+
+const Path = require('path');
+const Util = require('util');
+
+const Package = require(Path.resolve(__dirname, 'package.json'));
+console.log(Util.format('Players-Auction %s', Package.version));
+
+try {
+	require('sockjs');
+	require('node-static');
+} catch (err) {
+	console.log('Installing dependencies...');
+	require('child_process').spawnSync('npm', ['install', '--production'], {stdio: 'inherit'});
+}
+
+console.log("Loading configuration...");
+
+const Config = {
+	http: {enabled: true, port: 8080, bindaddr: "0.0.0.0"},
+	https: {enabled: false, port: 5000, bindaddr: "0.0.0.0", cert: "", key: ""},
+	auth: {user: "admin", password: "admin"},
+	proxy: {using: false},
+	logs: {maxOldApp: 15, maxOldRoom: 7},
+};
+
+const ConfigManager = require(Path.resolve(__dirname, 'server/tools/config.js'));
+
+let cm = null;
+try {
+	cm = new ConfigManager(Path.resolve(__dirname, "application.conf"));
+} catch (err) {
+	console.log("Cannot load configuration file: " + err.message);
+}
+
+if (cm) {
+	if (cm.has("HTTP", "ENABLED")) {
+		Config.http.enabled = (cm.get("HTTP", "ENABLED") === "Yes");
+	}
+	if (cm.has("HTTP", "PORT")) {
+		Config.http.port = parseInt(cm.get("HTTP", "PORT"));
+	}
+	if (cm.has("HTTP", "BINDADDR")) {
+		Config.http.bindaddr = cm.get("HTTP", "BINDADDR");
+	}
+	if (cm.has("HTTPS", "ENABLED")) {
+		Config.https.enabled = (cm.get("HTTPS", "ENABLED") === "Yes");
+	}
+	if (cm.has("HTTPS", "PORT")) {
+		Config.https.port = parseInt(cm.get("HTTPS", "PORT"));
+	}
+	if (cm.has("HTTPS", "BINDADDR")) {
+		Config.https.bindaddr = cm.get("HTTPS", "BINDADDR");
+	}
+	if (cm.has("HTTPS", "CERT_FILE")) {
+		Config.https.cert = cm.get("HTTPS", "CERT_FILE");
+	}
+	if (cm.has("HTTPS", "KEY_FILE")) {
+		Config.https.key = cm.get("HTTPS", "KEY_FILE");
+	}
+	if (cm.has("Auth", "DEFAULT_ADMIN")) {
+		Config.auth.user = cm.get("Auth", "DEFAULT_ADMIN");
+	}
+	if (cm.has("Auth", "DEFAULT_PASSWORD")) {
+		Config.auth.password = cm.get("Auth", "DEFAULT_PASSWORD");
+	}
+	if (cm.has("Proxy", "USING")) {
+		Config.proxy.using = (cm.get("Proxy", "USING") === "Yes");
+	}
+	if (cm.has("Logs", "MAX_OLD_APP")) {
+		Config.logs.maxOldApp = cm.get("Logs", "MAX_OLD_APP");
+	}
+	if (cm.has("Logs", "MAX_OLD_ROOM")) {
+		Config.logs.maxOldRoom = cm.get("Logs", "MAX_OLD_ROOM");
+	}
+}
+
+console.log("Starting up...");
+
+require(Path.resolve(__dirname, 'server/index.js')).start(Config);

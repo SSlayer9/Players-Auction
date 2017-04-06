@@ -3,6 +3,13 @@ logs
 *.log
 npm-debug.log*
 
+# Data
+data
+terminal.bat
+
+# eslint
+.eslintrc
+
 # Runtime data
 pids
 *.pid

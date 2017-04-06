@@ -1,0 +1,33 @@
+{
+  "name": "players-auction",
+  "version": "0.0.1-alpha",
+  "author": {
+    "name": "Agustin San Roman",
+    "email": "agustinsanromanguzman@gmail.com",
+    "url": "https://github.com/asanrom"
+  },
+  "scripts": {
+    "start": "node players-auction",
+	"test": "eslint players-auction server/"
+  },
+  "main": "players-auction",
+  "bin": "players-auction",
+  "engines": {
+    "node": "> 4.0.0"
+  },
+  "dependencies": {
+    "sockjs": "0.3.18",
+	"node-static": "0.7.9"
+  },
+  "description": "Run live players auctions (a tool for team tournaments)",
+  "homepage": "https://github.com/asanrom/Players_Auction",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asanrom/Players_Auction.git"
+  },
+  "private": true,
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "3.11.1"
+  }
+}

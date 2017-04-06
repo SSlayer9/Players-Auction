@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- Players Aution Client -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Players Aution</title>
+		<!-- Styles -->
+		<link rel="stylesheet" href="./style/lib/jquery-ui.min.css" />
+		<link rel="stylesheet" href="./style/lib/jquery-ui.structure.min.css" />
+		<link rel="stylesheet" href="./style/lib/jquery-ui.theme.min.css" />
+
+		<link rel="stylesheet" href="./style/client.css" />
+		<link rel="stylesheet" href="./style/rooms.css" />
+		<!-- Javascript Dependencies -->
+		<script type="text/javascript" src="./js/lib/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="./js/lib/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="./js/lib/autosize.min.js"></script>
+		<script type="text/javascript" src="./js/lib/sockjs-1.1.1.min.js"></script>
+
+		<script type="text/javascript" src="./js/tools.js"></script>
+		<script type="text/javascript" src="./js/usage-data.js"></script>
+		<script type="text/javascript" src="./js/commands.js"></script>
+		<script type="text/javascript" src="./js/rooms.js"></script>
+		<script type="text/javascript" src="./js/auction.js"></script>
+		<script type="text/javascript" src="./js/client.js"></script>
+		
+	</head>
+	<body>
+		<div id="page-content"></div>
+		
+		<div id="top-div">
+			<span class="logo">Players Auction</span>
+			<!--<span id="connection-status" class="connection-status">Connecting...</span> -->
+			<div class="corner-div">
+				<span id="login-status" class="login-status">Connecting...</span>
+				<button class="corner-menu-btn" name="menu"></button>
+			</div>
+			<div class="top-buttons" id="options-menu">
+				<button id="cpassword-button" name="cpassword" class="top-button">Change&nbsp;Password</button>
+				<button id="register-button" name="register" class="top-button">Register&nbsp;Account</button>
+				<button id="rename-button" name="rename" class="top-button">Rename</button>
+				<button id="login-button" name="login" class="top-button">Login</button>
+			</div>
+		</div>
+		
+		<!-- Text Resources -->
+		
+		<div id="data-div-home-help" style="display:none;">
+			<h2 align="center">Welcome to Players Auction!</h2>
+			<p>This is an application for implementing auctions of players on-line. These kind of autions are usually necesary for team tornaments on video games, where there are a few teams with a lot of players joined. Teams get the same ficticial money and they nominate and bid in order to get the best players.</p>
+			<p>The coin used for ficticial money in this application is <u>K (kilocredits)</u>. It can only vary with intervals of <u>0.5</u>. This means, for example, you cannot offer 5.1K. You must offer integer values or decimals multiple of 0.5K.</p>
+			<p>This is a server which can host multiple auctions, one per room. In order to join an auction click the buttons placed on the middle column. If you are an administrator, you can create rooms typing the command <b>/makeroom Room Name</b></p>
+			<p>In order to get a full commands list type the commands <b>/help</b> and <b>/adminhelp</b></p>
+			<p>This application is <a class="external-link" href="https://github.com/asanrom/Players-Auction" target="_blank">Open Source</a>. Players Auction is distributted in terms of <a class="external-link" href="https://github.com/asanrom/Players-Auction/blob/master/LICENSE" target="_blank">MIT License</a>. </p>
+		</div>
+		
+		<div id="data-div-help-command" style="display:none;">
+			<h2 align="center">Basic Commands</h2>
+			<ul>
+				<li><b>/login</b> - Opens the login dialog.</li>
+				<li><b>/register</b> - Opens the regiister dialog. Use it to register an account.</li>
+				<li><b>/rename &lt;name&gt;</b> - Changes your name but not your id.</li>
+				<li><b>/changepassword</b> - Opens a dialog for changing your password.</li>
+				<br />
+				<li><b>/join &lt;room&gt;</b> - Joins a room.</li>
+				<li><b>/leave &lt;room&gt;</b> - Leaves a room.</li>
+				<br />
+				<li><b>/nominate &lt;player&gt;</b> - Nominates a player.</li>
+				<li><b>/pass</b> - Passes the turn.</li>
+				<li><b>/bid &lt;money&gt;</b> - Bids for a player.</li>
+				<br />
+				<li><b>/manager &lt;user&gt;</b> - Promotes to room manager.</li>
+				<li><b>/moderator &lt;user&gt;</b> - Promotes to room moderator.</li>
+				<li><b>/deauth &lt;user&gt;</b> - Demotes form room manager / moderator.</li>
+				<br />
+				<li><b>/private</b> - Makes the room private-access only.</li>
+				<li><b>/public</b> - Makes the room public.</li>
+				<li><b>/ban &lt;user&gt;</b> - Bans an user from the room.</li>
+				<li><b>/unban &lt;user&gt;</b> - Unbans an user.</li>
+				<li><b>/modchat &lt;0|1|2&gt;</b> - Sets the modchat level.</li>
+				<br />
+				<li><b>/finalizebid</b> - Forces a bid to finalize</li>
+				<li><b>/teamname &lt;new-team-name&gt;</b> - Fixes a team name (for uppercase/lowercase).</li>
+			</ul>
+		</div>
+		<div id="data-div-adminhelp-command" style="display:none;">
+			<h2 align="center">Administration Commands</h2>
+			<ul>
+				<li><b>/deregister &lt;user&gt;</b> - Removes an account. Much caution!</li>
+				<li><b>/admin &lt;user&gt;</b> - Promotes to administrator.</li>
+				<li><b>/deadmin &lt;user&gt;</b> - Demotes from administrator.</li>
+				<br />
+				<li><b>/makeroom &lt;name&gt;</b> - Creates an auction room.</li>
+				<li><b>/deleteroom &lt;room&gt;</b> - Deletes a room. Much Caution!.</li>
+				<li><b>/roomname &lt;name&gt;</b> - Changes the name of the room.</li>
+			</ul>
+		</div>
+	</body>
+</html>
