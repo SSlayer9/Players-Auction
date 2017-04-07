@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node players-auction",
-	"test": "eslint players-auction server/"
+	"test": "eslint --fix --cache players-auction server/ && eslint --fix --cache --config=client/.eslintrc client/js/*.js"
   },
   "main": "players-auction",
   "bin": "players-auction",

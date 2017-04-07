@@ -4,15 +4,15 @@ window.ClientMainRoom = function (app) {
 	this.app = app;
 	this.id = "_home";
 	this.name = "Home";
-	
+
 	this.sendLog = [];
 	this.sendLogPos = 0;
-	
+
 	var buf = '';
 	buf += '<div class="help-home-div" id="help-home-div">';
-	
+
 	buf += $("#data-div-home-help").html();
-	
+
 	buf += '</div>';
 	buf += '<div class="rooms-home-div" id="rooms-home-div">';
 	buf += '</div>';
@@ -24,7 +24,7 @@ window.ClientMainRoom = function (app) {
 	buf += '<span class="connecting-chatarea">Connecting...</span>';
 	buf += '</div>';
 	buf += '</div>';
-	
+
 	app.addTab("_home", "<span class=\"ui-icon ui-icon-home\"></span> Home", buf);
 };
 
@@ -48,7 +48,7 @@ ClientMainRoom.prototype.setNotConnected = function () {
 	buf += '<span class="not-connected-chatarea">You are not connected to the server.</span>';
 	buf += '<span class="chatarea-buttons"><button name="reconnect" class="chatarea-button">Reconnect</button></span>';
 	$("#" + this.id + '-chat-area').html(buf);
-}
+};
 
 ClientMainRoom.prototype.setLoginStatus = function (name, group) {
 	var buf = '';
@@ -83,7 +83,7 @@ ClientMainRoom.prototype.setLoginStatus = function (name, group) {
 			}
 			event.preventDefault();
 		} else if (event.which == 9) { //Tab
-			let newVal = this.app.completeLine(event.target.value, this);
+			var newVal = this.app.completeLine(event.target.value, this);
 			if (event.target.value !== newVal) {
 				event.target.value = newVal;
 			}
@@ -91,13 +91,13 @@ ClientMainRoom.prototype.setLoginStatus = function (name, group) {
 		}
 	}.bind(this));
 	if (group === "~") {
-		this.name = "<span class=\"ui-icon ui-icon-home\"></span> Home - Administrator"
+		this.name = "<span class=\"ui-icon ui-icon-home\"></span> Home - Administrator";
 		this.app.changeTabTitleHTML(this.id, this.name);
 	} else {
 		this.name = "<span class=\"ui-icon ui-icon-home\"></span> Home";
 		this.app.changeTabTitleHTML(this.id, this.name);
 	}
-}
+};
 
 ClientMainRoom.prototype.setRoomsList = function (list) {
 	this.room_list = list;
@@ -116,12 +116,12 @@ ClientMainRoom.prototype.add = function (html) {
 	var mustScroll = container.scrollTop() >= (subcontainer.height() - container.height() - 50);
 	subcontainer.append(html);
 	if (mustScroll) {
-		container.scrollTop(subcontainer.height())
+		container.scrollTop(subcontainer.height());
 	}
 };
 
 ClientMainRoom.prototype.addMsg = function (msg, date) {
-	this.add('<div class="chat-msg"><span class="chat-time">' + Tools.getTimeString(date) + 
+	this.add('<div class="chat-msg"><span class="chat-time">' + Tools.getTimeString(date) +
 		'</span> ' + msg + '</div>');
 };
 
@@ -139,30 +139,30 @@ window.AuctionRoom = function (app, id) {
 	this.app = app;
 	this.id = id;
 	this.name = id;
-	
+
 	this.users = {};
 	this.auction = {};
-	
+
 	this.status = 0;
 	this.nominated = "";
 	this.nominatedTeam = "";
 	this.nominatedCost = 0;
 	this.timeout = 0;
 	this.timer = null;
-	
+
 	this.modchat = 0;
-	
+
 	this.sendLog = [];
 	this.sendLogPos = 0;
-	
+
 	this.selectedPlayers = {};
-	
+
 	var buf = '';
 	//buf += '<td class="chat-td" width="55%">';
 	buf += '<div id="single-room-tabs-' + this.id + '" class="single-room-tabs">';
-	
+
 	/* Tabs */
-	
+
 	buf += '<ul>';
 	buf += '<li><a href="#tab-auction-' + this.id + '">Auction</a></li>';
 	buf += '<li><a href="#tab-teams-' + this.id + '">Teams</a></li>';
@@ -173,7 +173,7 @@ window.AuctionRoom = function (app, id) {
 	buf += '<div id="tab-teams-' + this.id + '" class="room-tab-option"></div>';
 	buf += '<div id="tab-players-' + this.id + '" class="room-tab-option"></div>';
 	buf += '<div id="tab-users-' + this.id + '" class="room-tab-option"></div>';
-	
+
 	buf += '</div>';
 	/* Public chat */
 	buf += '<div class="room-chat-div">';
@@ -184,14 +184,14 @@ window.AuctionRoom = function (app, id) {
 	buf += '<span class="not-connected-chatarea">You are not connected to the server.</span>';
 	buf += '</div>';
 	buf += '</div>';
-	
+
 	app.addTab(this.id, this.id, buf);
-	
+
 	this.tabs = $("#single-room-tabs-" + this.id).tabs();
 	this.tabs.tabs('disable', 4);
-	
+
 	//$(".room-config-group").controlgroup();
-	
+
 	$("#room-close-button-" + this.id).on("click", function () {
 		this.app.home_room.send("/leave " + this.id);
 	}.bind(this));
@@ -222,7 +222,7 @@ AuctionRoom.prototype.setNotConnected = function () {
 	buf += '<span class="not-connected-chatarea">You are not connected to the server.</span>';
 	buf += '<span class="chatarea-buttons"><button name="reconnect" class="chatarea-button">Reconnect</button></span>';
 	$("#" + this.id + '-chat-area').html(buf);
-}
+};
 
 AuctionRoom.prototype.setLoginStatus = function (name) {
 	var buf = '';
@@ -257,7 +257,7 @@ AuctionRoom.prototype.setLoginStatus = function (name) {
 			}
 			event.preventDefault();
 		} else if (event.which == 9) { //Tab
-			let newVal = this.app.completeLine(event.target.value, this);
+			var newVal = this.app.completeLine(event.target.value, this);
 			if (event.target.value !== newVal) {
 				event.target.value = newVal;
 			}
@@ -272,12 +272,12 @@ AuctionRoom.prototype.add = function (html) {
 	var mustScroll = container.scrollTop() >= (subcontainer.height() - container.height() - 50);
 	subcontainer.append(html);
 	if (mustScroll) {
-		container.scrollTop(subcontainer.height())
+		container.scrollTop(subcontainer.height());
 	}
 };
 
 AuctionRoom.prototype.addMsg = function (msg, date) {
-	this.add('<div class="chat-msg"><span class="chat-time">' + Tools.getTimeString(date) + 
+	this.add('<div class="chat-msg"><span class="chat-time">' + Tools.getTimeString(date) +
 		'</span> ' + msg + '</div>');
 };
 
@@ -307,47 +307,47 @@ AuctionRoom.prototype.updateAuctionTab = function () {
 		this.timer = null;
 	}
 	switch (this.status) {
-		case 0:
-			team = this.auction.teams[this.auction.turn];
-			if (team) {
-				html += '<h3>' + Tools.escapeHTML(team.name) + ' has the turn for nominating</h3>';
-				if (team.captains[this.app.currUser.id]) {
-					if (this.getFreePlayers().length > 0) {
-						html += '<p><button class="auction-button" name="nominate" value="' + this.id + '">Nominate a Player</button></p>';
-						if (this.getPlayersByTeam(this.auction.turn).length >= this.auction.config.minplayers) {
-							html += '<p><button class="auction-button" name="pass" value="' + this.id + '">Pass the turn</button></p>';
-						}
-					} else {
-						html += '<p><b>There are no more players to nominate.</b></p>';
+	case 0:
+		team = this.auction.teams[this.auction.turn];
+		if (team) {
+			html += '<h3>' + Tools.escapeHTML(team.name) + ' has the turn for nominating</h3>';
+			if (team.captains[this.app.currUser.id]) {
+				if (this.getFreePlayers().length > 0) {
+					html += '<p><button class="auction-button" name="nominate" value="' + this.id + '">Nominate a Player</button></p>';
+					if (this.getPlayersByTeam(this.auction.turn).length >= this.auction.config.minplayers) {
+						html += '<p><button class="auction-button" name="pass" value="' + this.id + '">Pass the turn</button></p>';
 					}
+				} else {
+					html += '<p><b>There are no more players to nominate.</b></p>';
 				}
-			} else {
-				html += '<h3>Waiting for a room manager to set the initial turn</h3>';
 			}
-			break;
-		case 1:
-			html += '<h3>' + Tools.escapeHTML(this.playerName(this.nominated)) + ' has been nominated</h3>';
-			html += '<h4>' + Tools.escapeHTML(this.teamName(this.nominatedTeam)) + ' has the highest bid: ' + 
+		} else {
+			html += '<h3>Waiting for a room manager to set the initial turn</h3>';
+		}
+		break;
+	case 1:
+		html += '<h3>' + Tools.escapeHTML(this.playerName(this.nominated)) + ' has been nominated</h3>';
+		html += '<h4>' + Tools.escapeHTML(this.teamName(this.nominatedTeam)) + ' has the highest bid: ' +
 				Tools.escapeHTML(this.nominatedCost) + 'K</h4>';
-			team = this.getTeamByCaptain(this.app.currUser.id);
-			if (team) {
-				html += '<p><button class="auction-button" name="bid" value="' + this.id + '"' +
+		team = this.getTeamByCaptain(this.app.currUser.id);
+		if (team) {
+			html += '<p><button class="auction-button" name="bid" value="' + this.id + '"' +
 					(team.id === this.nominatedTeam ? "disabled" : "") + '>Offer ' +
 					Tools.escapeHTML(this.nominatedCost + 0.5) + 'K</button></p>';
-				html += '<p>Use <b>/bid X</b> to offer a custom amount.</p>';
+			html += '<p>Use <b>/bid X</b> to offer a custom amount.</p>';
+		}
+		html += '<p class="timer-msg"><span class="timer-mark" id="' + this.id + '-timer-mark">99 seconds left</span>.</p>';
+		this.timer = setInterval(function () {
+			var l = Math.floor((this.timeout - (Date.now() - this.app.timeoffset)) / 1000);
+			if (l <= 0) {
+				$("#" + this.id + "-timer-mark").html("Waiting...");
+			} else {
+				$("#" + this.id + "-timer-mark").html(l + " second" + (l === 1 ? "" : "s") + " left");
 			}
-			html += '<p class="timer-msg"><span class="timer-mark" id="' + this.id + '-timer-mark">99 seconds left</span>.</p>';
-			this.timer = setInterval(function () {
-				let l = Math.floor((this.timeout - (Date.now() - this.app.timeoffset)) / 1000);
-				if (l <= 0) {
-					$("#" + this.id + "-timer-mark").html("Waiting...");
-				} else {
-					$("#" + this.id + "-timer-mark").html(l + " second" + (l === 1 ? "" : "s") + " left");
-				}
-			}.bind(this), 1000);
-			break;
-		default:
-			html += '<p>Waiting...</p>';
+		}.bind(this), 1000);
+		break;
+	default:
+		html += '<p>Waiting...</p>';
 	}
 	if (this.users[this.app.currUser.id] && this.users[this.app.currUser.id].group in {"#": 1, "~": 1}) {
 		html += '<hr />';
@@ -358,7 +358,7 @@ AuctionRoom.prototype.updateAuctionTab = function () {
 	}
 	$("#tab-auction-" + this.id).html(html);
 	if (this.status === 1) {
-		let l = Math.floor((this.timeout - (Date.now() - this.app.timeoffset)) / 1000);
+		var l = Math.floor((this.timeout - (Date.now() - this.app.timeoffset)) / 1000);
 		if (l <= 0) {
 			$("#" + this.id + "-timer-mark").html("Waiting...");
 		} else {
@@ -383,7 +383,7 @@ AuctionRoom.prototype.updateUsersTab = function () {
 			groups[k].u.push(Tools.escapeHTML(this.users[id].name));
 		}
 	}
-	
+
 	var html = '<h2 align="center">Online Users (' + nUsers + ')</h2>';
 	html += '<table border="0" class="users-table">';
 	html += '<tr class="table-title"><td>&nbsp;</td><td><b>User Name</b></td><td><b>Group Name</b></td></tr>';
@@ -407,7 +407,7 @@ AuctionRoom.prototype.updatePlayersTab = function () {
 	var players = this.getPlayers();
 	if (this.users[this.app.currUser.id] && this.users[this.app.currUser.id].group in {"#": 1, "~": 1}) {
 		html += '<div class="auction-players-control">';
-		/*html += '<p><textarea class="config-textarea" id="' + this.id + 
+		/*html += '<p><textarea class="config-textarea" id="' + this.id +
 			'-room-players-textarea" placeholder="Player1, Player2, Player3, ..."></textarea></p>';*/
 		html += '<button class="config-button" name="rmplayers" value="' + this.id + '">Remove Selected Players</button>' +
 			'<button class="config-button" name="addplayers" value="' + this.id + '">Add Players</button>';
@@ -432,20 +432,20 @@ AuctionRoom.prototype.updatePlayersTab = function () {
 		html += '</tr>';
 	}
 	html += '</table>';
-	
+
 	$("#tab-players-" + this.id).html(html);
 };
 
 AuctionRoom.prototype.updateTeamsTab = function () {
 	var html = '<h2 align="center">Auction Teams</h2>';
 	var players, captains;
-	
+
 	if (this.users[this.app.currUser.id] && this.users[this.app.currUser.id].group in {"#": 1, "~": 1}) {
 		html += '<div class="auction-teams-control">';
 		html += '<button class="config-button" name="addteam" value="' + this.id + '">Register New Team</button>';
 		html += '</div>';
 	}
-	
+
 	for (var id in this.auction.teams) {
 		players = this.getPlayersByTeam(id);
 		captains = [];
@@ -465,7 +465,7 @@ AuctionRoom.prototype.updateTeamsTab = function () {
 		if (this.users[this.app.currUser.id] && this.users[this.app.currUser.id].group in {"#": 1, "~": 1}) {
 			html += '<hr />';
 			html += '<div class="auction-teams-control">';
-		
+
 			html += '<button class="config-button" name="setturn" value="' + this.id + '|' + id + '"' +
 				(this.auction.turn === id ? " disabled" : "") + '>Give Turn</button>';
 			html += '<button class="config-button" name="assignplayer" value="' + this.id + '|' + id + '"' +
@@ -473,14 +473,14 @@ AuctionRoom.prototype.updateTeamsTab = function () {
 			html += '<button class="config-button" name="setfreeplayer" value="' + this.id + '|' + id + '"' +
 				(this.getPlayersByTeam(id).length === 0 ? " disabled" : "") + '>Remove Player</button>';
 			html += '<button class="config-button" name="setcaptain" value="' + this.id + '|' + id + '">Add Captain</button>';
-			html += '<button class="config-button" name="rmcaptain" value="' + this.id + '|' + id  + '"' +
+			html += '<button class="config-button" name="rmcaptain" value="' + this.id + '|' + id + '"' +
 				(this.getCaptainsByTeam(id).length === 0 ? " disabled" : "") + '>Remove Captain</button>';
 			html += '<button class="config-button" name="setmoney" value="' + this.id + '|' + id + '">Set Money</button>';
-			html += '<button class="config-button-danger" name="deleteteam" value="' + this.id + '|' + id  + '">Delete Team</button>';
+			html += '<button class="config-button-danger" name="deleteteam" value="' + this.id + '|' + id + '">Delete Team</button>';
 			html += '</div>';
 		}
 		html += '</div>';
 	}
-	
+
 	$("#tab-teams-" + this.id).html(html);
 };
