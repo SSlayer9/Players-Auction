@@ -236,11 +236,15 @@ class App {
 	}
 
 	disconnectHandler(user) {
-		for (let room of user.rooms) {
+		let rooms = user.rooms.slice();
+		let ids = [];
+		for (let room of rooms) {
 			room.removeUser(user);
+			ids.push(room.id);
 		}
 		delete this.users[user.id];
 		user.removeAllListeners();
+		this.updateTokens(user.id, ids);
 	}
 
 	writeUserData() {
@@ -325,8 +329,18 @@ class App {
 		this.tokens[token] = {
 			user: id,
 			created: Date.now(),
+			rooms: [],
 		};
 		return token;
+	}
+
+	updateTokens(id, rooms) {
+		this.checkTokens();
+		for (let token in this.tokens) {
+			if (this.tokens[token].user === id) {
+				this.tokens[token].rooms = rooms;
+			}
+		}
 	}
 
 	applyLogin(user, newName) {
@@ -356,6 +370,7 @@ class App {
 			}
 		}
 		newUser.merge(user);
+		return newUser;
 	}
 
 	createRoom(id, name) {

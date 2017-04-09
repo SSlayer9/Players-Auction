@@ -51,7 +51,13 @@ const Commands = {
 			let user = this.app.tokens[token].user;
 			if (this.user.id === user) return;
 			if (this.app.userData[user]) {
-				this.app.applyLogin(this.user, user);
+				this.user = this.app.applyLogin(this.user, user);
+				for (let roomid of this.app.tokens[token].rooms) {
+					let room = this.app.rooms[roomid];
+					if (room) {
+						room.addUser(this.user);
+					}
+				}
 			} else {
 				delete this.app.tokens[token];
 				this.error("INVALID-TOKEN", token);
