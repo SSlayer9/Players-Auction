@@ -527,8 +527,15 @@ Client.prototype.parseCommand = function (room, line, context) {
 Client.prototype.changeLogin = function (name, guest, group) {
 	if (name !== undefined) {
 		var token = Tools.getCookie("token");
+		var roomToJoin = document.location.href.split("#")[1];
+		if (this.currUser.id || roomToJoin === "_home") {
+			roomToJoin = "";
+		}
 		if (token && !this.currUser.id) {
 			this.home_room.send("/token " + token);
+		}
+		if (roomToJoin) {
+			this.home_room.send("/join " + roomToJoin);
 		}
 		this.currUser.name = name;
 		this.currUser.id = Tools.toId(name);
