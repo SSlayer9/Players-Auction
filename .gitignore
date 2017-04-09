@@ -8,9 +8,6 @@ npm-debug.log*
 data
 terminal.bat
 
-# eslint
-.eslintrc
-
 # Runtime data
 pids
 *.pid
