@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+
+/* Minify client scripts */
+
+'use strict';
+
+const Path = require('path');
+const FileSystem = require('fs');
+const Compressor = require('node-minify');
+
+const JS_Files_Path = Path.resolve(__dirname, 'client/js/');
+const JS_Min_Files_Path = Path.resolve(__dirname, 'client/js/min');
+
+const CSS_Files_Path = Path.resolve(__dirname, 'client/style/');
+const CSS_Min_Files_Path = Path.resolve(__dirname, 'client/style/min');
+
+let files;
+
+files = FileSystem.readdirSync(JS_Files_Path);
+
+for (let file of files) {
+	if ((/\.js$/).test(file)) {
+		Compressor.minify({
+			compressor: 'uglifyjs',
+			input: Path.resolve(JS_Files_Path, file),
+			output: Path.resolve(JS_Min_Files_Path, file),
+		});
+	}
+}
+
+files = FileSystem.readdirSync(CSS_Files_Path);
+
+for (let file of files) {
+	if ((/\.css$/).test(file)) {
+		Compressor.minify({
+			compressor: 'clean-css',
+			input: Path.resolve(CSS_Files_Path, file),
+			output: Path.resolve(CSS_Min_Files_Path, file),
+		});
+	}
+}
